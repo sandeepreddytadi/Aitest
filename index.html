@@ -1,34 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Trigger n8n Webhook</title>
+  <title>Choose Input Source</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+    button {
+      font-size: 18px;
+      padding: 15px 30px;
+      margin: 20px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
 </head>
 <body>
 
-<h2>Trigger Webhook</h2>
-<button onclick="triggerWebhook()">Send to n8n</button>
+<h2>Select Input Source</h2>
+
+<button onclick="sendChoice('gmail')">Gmail</button>
+<button onclick="sendChoice('excel')">Excel</button>
+<button onclick="sendChoice('manual')">Manual Upload</button>
 
 <script>
-  function triggerWebhook() {
+  function sendChoice(source) {
     fetch("https://aiagentcreation.app.n8n.cloud/webhook-test/webhookintegration", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        message: "Hello from GitHub Page!",
-        time: new Date().toISOString()
+        source: source,
+        timestamp: new Date().toISOString()
       })
     })
     .then(response => {
       if (response.ok) {
-        alert("Webhook triggered successfully!");
+        alert("Sent: " + source);
       } else {
-        alert("Webhook failed. Status: " + response.status);
+        alert("Failed to send. Status: " + response.status);
       }
     })
     .catch(error => {
-      console.error("Error triggering webhook:", error);
+      console.error("Error:", error);
     });
   }
 </script>
+
+</body>
+</html>
